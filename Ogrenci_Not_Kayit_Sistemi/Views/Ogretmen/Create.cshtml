@@ -1,0 +1,257 @@
+﻿@model Ogrenci_Not_Kayit_Sistemi.Models.Ders
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Not Ekle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            width: 550px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            margin-bottom: 30px;
+        }
+
+            .card-header h1 {
+                font-size: 24px;
+                font-weight: 700;
+                color: #2d3748;
+            }
+
+            .card-header p {
+                color: #718096;
+                font-size: 14px;
+                margin-top: 5px;
+            }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+            .form-group.full {
+                grid-column: 1 / -1;
+            }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+            input:focus {
+                border-color: #4facfe;
+                box-shadow: 0 0 0 3px rgba(79,172,254,0.15);
+            }
+
+        .grades-section {
+            background: linear-gradient(135deg, #4facfe10, #00f2fe10);
+            border: 2px solid #4facfe30;
+            border-radius: 14px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+            .grades-section h3 {
+                font-size: 14px;
+                font-weight: 600;
+                color: #2c5282;
+                margin-bottom: 15px;
+            }
+
+        .grades-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .grade-input input {
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            color: #4facfe;
+        }
+
+        .auto-calc {
+            background: #f0fff4;
+            border: 2px solid #9ae6b4;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+            .auto-calc p {
+                font-size: 13px;
+                color: #2f855a;
+                font-weight: 600;
+            }
+
+            .auto-calc span {
+                font-size: 28px;
+                font-weight: 800;
+                color: #276749;
+            }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-save {
+            flex: 1;
+            padding: 14px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+            .btn-save:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(79,172,254,0.4);
+            }
+
+        .btn-back {
+            padding: 14px 20px;
+            background: #f0f4f8;
+            color: #4a5568;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h1>➕ Yeni Not Ekle</h1>
+            <p>Öğrenci bilgilerini ve notları girin</p>
+        </div>
+
+        <form method="post" asp-action="Create" asp-controller="Ogretmen">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Öğrenci No</label>
+                    <input asp-for="OgrNumara" placeholder="1001" />
+                </div>
+                <div class="form-group">
+                    <label>Ad</label>
+                    <input asp-for="OgrAd" placeholder="Ahmet" />
+                </div>
+                <div class="form-group full">
+                    <label>Soyad</label>
+                    <input asp-for="OgrSoyad" placeholder="Yılmaz" />
+                </div>
+            </div>
+
+            <div class="grades-section">
+                <h3>📝 Sınav Notları (0-100)</h3>
+                <div class="grades-grid">
+                    <div class="form-group grade-input">
+                        <label>1. Sınav</label>
+                        <input asp-for="Ogrs1" type="number" min="0" max="100"
+                               placeholder="0" id="s1" oninput="hesapla()" />
+                    </div>
+                    <div class="form-group grade-input">
+                        <label>2. Sınav</label>
+                        <input asp-for="Ogrs2" type="number" min="0" max="100"
+                               placeholder="0" id="s2" oninput="hesapla()" />
+                    </div>
+                    <div class="form-group grade-input">
+                        <label>3. Sınav</label>
+                        <input asp-for="Ogrs3" type="number" min="0" max="100"
+                               placeholder="0" id="s3" oninput="hesapla()" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="auto-calc" id="calcBox">
+                <p>⚡ Otomatik Hesaplama</p>
+                <span id="avgDisplay">-</span>
+                <p id="statusText" style="margin-top:5px; font-size:16px;">Not girin</p>
+            </div>
+
+            <div class="btn-row">
+                <a href="/Ogretmen/Index" class="btn-back">← Geri</a>
+                <button type="submit" class="btn-save">💾 Kaydet</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function hesapla() {
+            var s1 = parseFloat(document.getElementById('s1').value) || 0;
+            var s2 = parseFloat(document.getElementById('s2').value) || 0;
+            var s3 = parseFloat(document.getElementById('s3').value) || 0;
+            var avg = ((s1 + s2 + s3) / 3).toFixed(2);
+            document.getElementById('avgDisplay').textContent = avg;
+            var box = document.getElementById('calcBox');
+            var status = document.getElementById('statusText');
+            if (avg >= 50) {
+                box.style.background = '#f0fff4';
+                box.style.borderColor = '#9ae6b4';
+                document.getElementById('avgDisplay').style.color = '#276749';
+                status.textContent = '✅ GEÇTİ';
+                status.style.color = '#276749';
+            } else {
+                box.style.background = '#fff5f5';
+                box.style.borderColor = '#fc8181';
+                document.getElementById('avgDisplay').style.color = '#c53030';
+                status.textContent = '❌ KALDI';
+                status.style.color = '#c53030';
+            }
+        }
+    </script>
+</body>
+</html>

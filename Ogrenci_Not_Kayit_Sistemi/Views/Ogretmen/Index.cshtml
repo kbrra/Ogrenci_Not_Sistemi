@@ -1,0 +1,291 @@
+﻿@model List<Ogrenci_Not_Kayit_Sistemi.Models.Ders>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Öğretmen Paneli</title>
+    
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>👨‍🏫 Öğretmen Paneli</h1>
+            <p>Tüm öğrenci notlarını yönetin</p>
+        </div>
+        <div class="header-btns">
+            <a href="/Ogretmen/Create" class="btn btn-add">➕ Yeni Not Ekle</a>
+            <a href="/Ogretmen/CreateStudent" class="btn btn-student">👤 Yeni Öğrenci Ekle</a>
+            <a href="/Login/Logout" class="btn btn-logout">🚪 Çıkış</a>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="num">@Model.Count</div>
+            <div class="lbl">Toplam Öğrenci</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">@Model.Count(x => x.Durum == true)</div>
+            <div class="lbl">✅ Geçen</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">@Model.Count(x => x.Durum == false)</div>
+            <div class="lbl">❌ Kalan</div>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Ad Soyad</th>
+                    <th>1. Sınav</th>
+                    <th>2. Sınav</th>
+                    <th>3. Sınav</th>
+                    <th>Ortalama</th>
+                    <th>Durum</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><strong>@item.OgrNumara</strong></td>
+                        <td><strong>@item.OgrAd @item.OgrSoyad</strong></td>
+                        <td>@item.Ogrs1</td>
+                        <td>@item.Ogrs2</td>
+                        <td>@item.Ogrs3</td>
+                        <td class="@(item.Ortalama >= 50 ? "avg-high" : "avg-low")">@item.Ortalama</td>
+                        <td>
+                            @if (item.Durum == true)
+                            {
+                                <span class="badge-pass">✅ GEÇTİ</span>
+                            }
+                            else
+                            {
+                                <span class="badge-fail">❌ KALDI</span>
+                            }
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit", "Ogretmen", new { id = item.OgrId })" class="btn-edit">✏️ Düzenle</a>
+                            <a href="@Url.Action("Delete", "Ogretmen", new { id = item.OgrId })"
+                               onclick="return confirm('Bu kaydı silmek istediğinize emin misiniz?')"
+                               class="btn-delete">🗑️ Sil</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+<style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #fda085 100%);
+        font-family: 'Segoe UI', sans-serif;
+        padding: 30px;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+        .header h1 {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+    .header-btns {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-add {
+        background: white;
+        color: #f5576c;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+    .btn-logout {
+        background: rgba(255,255,255,0.2);
+        color: white;
+        border: 2px solid rgba(255,255,255,0.5);
+    }
+
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        background: rgba(255,255,255,0.2);
+        border-radius: 16px;
+        padding: 20px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+
+        .stat-card .num {
+            font-size: 32px;
+            font-weight: 800;
+            color: white;
+        }
+
+        .stat-card .lbl {
+            font-size: 13px;
+            color: rgba(255,255,255,0.8);
+            margin-top: 4px;
+        }
+
+    .table-wrapper {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #f093fb, #f5576c);
+    }
+
+        thead th {
+            color: white;
+            padding: 16px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+    tbody tr {
+        border-bottom: 1px solid #f0f4f8;
+        transition: background 0.2s;
+    }
+
+        tbody tr:hover {
+            background: #fef9ff;
+        }
+
+    tbody td {
+        padding: 14px;
+        text-align: center;
+        color: #4a5568;
+        font-size: 14px;
+    }
+
+    .badge-pass {
+        background: linear-gradient(135deg, #c6f6d5, #f0fff4);
+        color: #276749;
+        border: 1px solid #9ae6b4;
+        padding: 5px 14px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 12px;
+    }
+
+    .badge-fail {
+        background: linear-gradient(135deg, #fed7d7, #fff5f5);
+        color: #c53030;
+        border: 1px solid #fc8181;
+        padding: 5px 14px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 12px;
+    }
+
+    .btn-edit {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 6px 14px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 600;
+        margin-right: 5px;
+    }
+
+    .btn-delete {
+        background: linear-gradient(135deg, #fc8181, #f5576c);
+        color: white;
+        padding: 6px 14px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+        .btn-edit:hover, .btn-delete:hover {
+            opacity: 0.85;
+        }
+
+    .avg-high {
+        color: #276749;
+        font-weight: 700;
+    }
+
+    .avg-low {
+        color: #c53030;
+        font-weight: 700;
+    }
+
+    .btn-student {
+        background: linear-gradient(135deg, #11998e, #38ef7d);
+        color: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+        .btn-student:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+</style>

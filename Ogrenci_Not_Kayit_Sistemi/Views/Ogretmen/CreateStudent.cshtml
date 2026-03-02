@@ -1,0 +1,162 @@
+﻿@model Ogrenci_Not_Kayit_Sistemi.Models.Kullanici
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Yeni Öğrenci</title>
+    
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h1>👤 Yeni Öğrenci Ekle</h1>
+            <p>Sisteme giriş yapacak öğrenci bilgilerini girin</p>
+        </div>
+
+        <div class="info-box">
+            ℹ️ Öğrenci numarası, not kayıt sistemindeki numara ile aynı olmalıdır.
+        </div>
+
+        <form method="post" asp-action="CreateStudent" asp-controller="Ogretmen">
+            <input type="hidden" name="Rol" value="Ogrenci" />
+
+            <div class="form-group">
+                <label>Kullanıcı Adı</label>
+                <input asp-for="KullaniciAd" placeholder="ahmet123" />
+            </div>
+            <div class="form-group">
+                <label>Şifre</label>
+                <input type="password" asp-for="Sifre" placeholder="••••••••" />
+            </div>
+            <div class="form-group">
+                <label>Öğrenci Numarası</label>
+                <input asp-for="OgrNumara" placeholder="1001" maxlength="4" />
+            </div>
+
+            <div class="btn-row">
+                <a href="/Ogretmen/Index" class="btn-back">← Geri</a>
+                <button type="submit" class="btn-save">💾 Kaydet</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #11998e, #38ef7d);
+        font-family: 'Segoe UI', sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 24px;
+        padding: 40px;
+        width: 480px;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+    }
+
+    .card-header {
+        margin-bottom: 30px;
+    }
+
+        .card-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .card-header p {
+            color: #718096;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 12px 14px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 14px;
+        outline: none;
+        transition: all 0.3s;
+    }
+
+        input:focus, select:focus {
+            border-color: #11998e;
+            box-shadow: 0 0 0 3px rgba(17,153,142,0.15);
+        }
+
+    .btn-row {
+        display: flex;
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    .btn-save {
+        flex: 1;
+        padding: 14px;
+        background: linear-gradient(135deg, #11998e, #38ef7d);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(17,153,142,0.4);
+        }
+
+    .btn-back {
+        padding: 14px 20px;
+        background: #f0f4f8;
+        color: #4a5568;
+        border: none;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .info-box {
+        background: #ebf8ff;
+        border: 1px solid #90cdf4;
+        border-radius: 10px;
+        padding: 12px 15px;
+        color: #2c5282;
+        font-size: 13px;
+        margin-bottom: 20px;
+    }
+</style>
