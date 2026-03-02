@@ -26,8 +26,4 @@ Var olan öğrenci bilgilerini düzenleme
 
 ✔️ HTML / CSS
 
-📁 Proje Yapısı
-Ogrenci_Not_Sistemi/
-├── Ogrenci_Not_Kayit_Sistemi/      # Uygulama kaynak kodları
-├── .gitignore
-└── Ogrenci_Not_Kayit_Sistemi.slnx  # Visual Studio çözüm dosyası
+
